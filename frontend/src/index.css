@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+:root {
+  /* Light Theme (default overrides to trick tailwind) */
+  --color-slate-950: #f8fafc;
+  --color-slate-900: #ffffff;
+  --color-slate-800: #f1f5f9;
+  --color-slate-700: #e2e8f0;
+  --color-slate-600: #cbd5e1;
+  --color-slate-500: #64748b;
+  --color-slate-400: #475569;
+  --color-slate-300: #334155;
+  --color-slate-200: #1e293b;
+  --color-slate-100: #0f172a;
+  --color-white: #020617;
+  
+  --color-cyan-300: #6366f1; /* indigo-500 */
+  --color-cyan-400: #4f46e5; /* indigo-600 */
+  --color-cyan-500: #4338ca; /* indigo-700 */
+  --color-cyan-600: #3730a3; /* indigo-800 */
+  --color-cyan-900: #e0e7ff; /* indigo-100 */
+  --color-cyan-950: #c7d2fe;
+}
+
+[data-theme="dark"] {
+  /* Dark Theme (standard tailwind colors) */
+  --color-slate-950: #020617;
+  --color-slate-900: #0f172a;
+  --color-slate-800: #1e293b;
+  --color-slate-700: #334155;
+  --color-slate-600: #475569;
+  --color-slate-500: #64748b;
+  --color-slate-400: #94a3b8;
+  --color-slate-300: #cbd5e1;
+  --color-slate-200: #e2e8f0;
+  --color-slate-100: #f1f5f9;
+  --color-white: #ffffff;
+  
+  --color-cyan-300: #67e8f9;
+  --color-cyan-400: #22d3ee;
+  --color-cyan-500: #06b6d4;
+  --color-cyan-600: #0891b2;
+  --color-cyan-900: #164e63;
+  --color-cyan-950: #083344;
+}
+
+body {
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  background-color: var(--color-slate-950);
+  color: var(--color-slate-100);
+}
