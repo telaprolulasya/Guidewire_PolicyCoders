@@ -152,4 +152,4 @@ This solution improves financial security and builds trust among gig workers thr
 - Demo Video: [Add your video link here]
   
 
-                                                    ""Empowering gig workers with smart, real-time income protection""
+""Empowering gig workers with smart, real-time income protection""
