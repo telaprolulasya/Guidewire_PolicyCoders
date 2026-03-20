@@ -149,7 +149,7 @@ This solution improves financial security and builds trust among gig workers thr
 **Team Name:** PolicyCoders  
 **Links:**
 - GitHub Repository: https://github.com/telaprolulasya/Guidewire_PolicyCoders
-- Demo Video: [Add your video link here]
+- Demo Video: [https://youtu.be/GUr0iGdwWMM]
   
 
 ""Empowering gig workers with smart, real-time income protection""
