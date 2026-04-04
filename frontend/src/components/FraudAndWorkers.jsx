@@ -7,7 +7,6 @@ const FraudAndWorkers = () => {
     const [workers, setWorkers] = useState([]);
     const [payouts, setPayouts] = useState([]);
     const [selectedWorker, setSelectedWorker] = useState(null);
-    const [selectedFraud, setSelectedFraud] = useState(null);
     const [isGenerating, setIsGenerating] = useState(false);
 
     useEffect(() => {
@@ -38,37 +37,31 @@ const FraudAndWorkers = () => {
     ];
 
     return (
-        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            
+        <div className="space-y-8">
+
             {/* Top Row: Fraud & Payouts */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                
+
                 {/* Fraud Detection */}
-                <div className="bg-slate-800/60 backdrop-blur-xl border border-slate-700 rounded-3xl p-8 relative overflow-hidden group">
+                <div className="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm">
                     <div className="flex items-center gap-3 mb-6">
-                        <div className="p-2 bg-red-500/20 rounded-xl"><Fingerprint className="text-red-400" /></div>
+                        <div className="p-2 bg-red-100 rounded-xl"><Fingerprint className="text-red-500" /></div>
                         <div>
-                            <h3 className="text-xl font-bold text-white">AI Fraud Detection</h3>
+                            <h3 className="text-xl font-bold text-slate-900">AI Fraud Detection</h3>
                             <p className="text-slate-400 text-sm">Suspicious activity flags</p>
                         </div>
                     </div>
-                    
                     <div className="space-y-4">
                         {displayFraud.map((f, i) => (
-                            <div key={i} className="bg-slate-900 border-l-4 border-red-500 p-4 rounded-r-xl">
+                            <div key={i} className="bg-red-50 border-l-4 border-red-400 p-4 rounded-r-xl">
                                 <div className="flex justify-between items-start">
-                                    <span className="text-red-400 text-xs font-bold uppercase tracking-wider mb-1 block">Alert Flagged</span>
-                                    <span className="text-slate-500 text-xs">{f.reported_date}</span>
+                                    <span className="text-red-500 text-xs font-bold uppercase tracking-wider mb-1 block">Alert Flagged</span>
+                                    <span className="text-slate-400 text-xs">{f.reported_date}</span>
                                 </div>
-                                <p className="text-slate-200 font-medium">{f.reason}</p>
+                                <p className="text-slate-700 font-medium">{f.reason}</p>
                                 <div className="mt-3 flex items-center gap-2">
-                                    <span className="text-xs bg-slate-800 text-slate-400 px-2 py-1 rounded-md border border-slate-700">Worker ID #{f.worker_id}</span>
-                                    <button 
-                                        onClick={() => setSelectedFraud(f)}
-                                        className="text-xs text-indigo-400 hover:text-indigo-300 font-medium"
-                                    >
-                                        Investigate
-                                    </button>
+                                    <span className="text-xs bg-white text-slate-500 px-2 py-1 rounded-md border border-slate-200">Worker ID #{f.worker_id}</span>
+                                    <button className="text-xs text-indigo-500 hover:text-indigo-700 font-medium">Investigate</button>
                                 </div>
                             </div>
                         ))}
@@ -76,25 +69,24 @@ const FraudAndWorkers = () => {
                 </div>
 
                 {/* Recent Payouts */}
-                <div className="bg-slate-800/60 backdrop-blur-xl border border-slate-700 rounded-3xl p-8 relative overflow-hidden group">
+                <div className="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm">
                     <div className="flex items-center gap-3 mb-6">
-                        <div className="p-2 bg-green-500/20 rounded-xl"><IndianRupee className="text-green-400" /></div>
+                        <div className="p-2 bg-green-100 rounded-xl"><IndianRupee className="text-green-500" /></div>
                         <div>
-                            <h3 className="text-xl font-bold text-white">Automated Payouts</h3>
-                            <p className="text-slate-400 text-sm">Recently dispersed funds via smart contract</p>
+                            <h3 className="text-xl font-bold text-slate-900">Automated Payouts</h3>
+                            <p className="text-slate-400 text-sm">Recently dispersed via smart contract</p>
                         </div>
                     </div>
-
-                    <div className="space-y-4">
+                    <div className="divide-y divide-slate-100">
                         {displayPayouts.map((p, i) => (
-                            <div key={i} className="flex justify-between items-center py-3 border-b border-slate-700/50 last:border-0 hover:bg-slate-700/20 px-2 rounded-lg transition">
+                            <div key={i} className="flex justify-between items-center py-4 hover:bg-slate-50 px-2 rounded-lg transition">
                                 <div>
-                                    <p className="text-white font-medium">{p.reason}</p>
-                                    <p className="text-slate-500 text-sm mt-0.5">Worker #{p.worker_id} • {p.date}</p>
+                                    <p className="text-slate-800 font-medium">{p.reason}</p>
+                                    <p className="text-slate-400 text-sm mt-0.5">Worker #{p.worker_id} • {p.date}</p>
                                 </div>
                                 <div className="text-right">
-                                    <p className="text-green-400 font-bold text-lg">+₹{p.amount}</p>
-                                    <p className="text-slate-500 text-xs">Tx: {p.id}</p>
+                                    <p className="text-green-600 font-bold text-lg">+₹{p.amount}</p>
+                                    <p className="text-slate-400 text-xs">Tx: {p.id}</p>
                                 </div>
                             </div>
                         ))}
@@ -102,41 +94,35 @@ const FraudAndWorkers = () => {
                 </div>
             </div>
 
-            {/* Worker Management */}
-            <div className="bg-slate-800/60 backdrop-blur-xl border border-slate-700 rounded-3xl p-8">
+            {/* Worker Directory */}
+            <div className="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm">
                 <div className="flex items-center gap-3 mb-6">
-                    <div className="p-2 bg-blue-500/20 rounded-xl"><Users className="text-blue-400" /></div>
+                    <div className="p-2 bg-blue-100 rounded-xl"><Users className="text-blue-500" /></div>
                     <div>
-                        <h3 className="text-xl font-bold text-white">Worker Directory</h3>
+                        <h3 className="text-xl font-bold text-slate-900">Worker Directory</h3>
                         <p className="text-slate-400 text-sm">Manage enrolled gig workers</p>
                     </div>
                 </div>
-                
                 <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                         <thead>
-                            <tr className="border-b border-slate-700">
-                                <th className="pb-3 px-4 text-slate-400 font-medium text-sm">Worker ID</th>
-                                <th className="pb-3 px-4 text-slate-400 font-medium text-sm">Name</th>
-                                <th className="pb-3 px-4 text-slate-400 font-medium text-sm">Location</th>
-                                <th className="pb-3 px-4 text-slate-400 font-medium text-sm">Status</th>
-                                <th className="pb-3 px-4 text-slate-400 font-medium text-sm text-right">Action</th>
+                            <tr className="border-b border-slate-200">
+                                {['Worker ID', 'Name', 'Location', 'Status', 'Action'].map((h, i) => (
+                                    <th key={h} className={`pb-3 px-4 text-slate-400 font-medium text-sm ${i === 4 ? 'text-right' : ''}`}>{h}</th>
+                                ))}
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-slate-700/50">
+                        <tbody className="divide-y divide-slate-100">
                             {displayWorkers.map((w, idx) => (
-                                <tr key={idx} className="hover:bg-slate-700/20 transition-colors">
+                                <tr key={idx} className="hover:bg-slate-50 transition-colors">
                                     <td className="py-4 px-4 font-mono text-slate-400">#{w._id?.slice(-4) || w.id}</td>
-                                    <td className="py-4 px-4 font-bold text-slate-200">{w.name}</td>
-                                    <td className="py-4 px-4 text-slate-400"><span className="flex items-center gap-1"><MapPin size={14}/> {w.location || w.city}</span></td>
+                                    <td className="py-4 px-4 font-bold text-slate-800">{w.name}</td>
+                                    <td className="py-4 px-4 text-slate-500"><span className="flex items-center gap-1"><MapPin size={14}/> {w.location || w.city}</span></td>
                                     <td className="py-4 px-4">
-                                        <span className={`px-2 py-1 rounded-md text-xs font-bold ${w.status === 'Active' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>{w.status}</span>
+                                        <span className={`px-2 py-1 rounded-md text-xs font-bold ${w.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'}`}>{w.status}</span>
                                     </td>
                                     <td className="py-4 px-4 text-right">
-                                        <button 
-                                            onClick={() => setSelectedWorker(w)}
-                                            className="bg-slate-700 hover:bg-slate-600 text-white text-xs px-3 py-1.5 rounded-lg font-medium transition"
-                                        >
+                                        <button onClick={() => setSelectedWorker(w)} className="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs px-3 py-1.5 rounded-lg font-medium transition">
                                             View Profile
                                         </button>
                                     </td>
@@ -149,93 +135,48 @@ const FraudAndWorkers = () => {
 
             {/* Worker Profile Modal */}
             {selectedWorker && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-300">
-                    <div className="bg-slate-900 border border-slate-700 rounded-[32px] w-full max-w-lg shadow-2xl relative overflow-hidden animate-in zoom-in-95 duration-300">
-                        {/* Header Background */}
-                        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-br from-indigo-600 to-purple-700 -z-10 opacity-20"></div>
-                        
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-300">
+                    <div className="bg-white border border-slate-200 rounded-[32px] w-full max-w-lg shadow-2xl relative overflow-hidden animate-in zoom-in-95 duration-300">
+                        <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-br from-indigo-500 to-purple-600 opacity-10"></div>
                         <div className="p-8">
                             <div className="flex justify-between items-start mb-8">
                                 <div className="flex items-center gap-4">
-                                    <div className="w-20 h-20 bg-slate-800 rounded-2xl flex items-center justify-center border border-slate-700 shadow-xl">
-                                        <Shield size={40} className="text-indigo-400" />
+                                    <div className="w-20 h-20 bg-indigo-50 rounded-2xl flex items-center justify-center border border-indigo-100 shadow-sm">
+                                        <Shield size={40} className="text-indigo-500" />
                                     </div>
                                     <div>
-                                        <h3 className="text-2xl font-black text-white">{selectedWorker.name}</h3>
+                                        <h3 className="text-2xl font-black text-slate-900">{selectedWorker.name}</h3>
                                         <p className="text-slate-400 font-bold uppercase tracking-widest text-[10px] mt-1">Worker ID: #{selectedWorker._id?.slice(-6) || selectedWorker.id}</p>
                                     </div>
                                 </div>
-                                <button 
-                                    onClick={() => setSelectedWorker(null)}
-                                    className="p-2 hover:bg-slate-800 rounded-xl transition-colors text-slate-500"
-                                >
-                                    <div className="w-6 h-6 flex items-center justify-center font-bold text-xl">×</div>
+                                <button onClick={() => setSelectedWorker(null)} className="p-2 hover:bg-slate-100 rounded-xl transition-colors text-slate-400 hover:text-slate-700">
+                                    <span className="w-6 h-6 flex items-center justify-center font-bold text-xl">×</span>
                                 </button>
                             </div>
 
-                            <div className="grid grid-cols-2 gap-6 mb-8">
-                                <div className="bg-slate-800/50 p-4 rounded-2xl border border-slate-700/50">
-                                    <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1.5">Location</p>
-                                    <div className="flex items-center gap-2 text-slate-200">
-                                        <MapPin size={16} className="text-indigo-400" />
-                                        <span className="font-bold">{selectedWorker.location || selectedWorker.city}</span>
+                            <div className="grid grid-cols-2 gap-4 mb-8">
+                                {[
+                                    { label: 'Location', icon: <MapPin size={16} className="text-indigo-500" />, value: selectedWorker.location || selectedWorker.city },
+                                    { label: 'Platform', icon: <Shield size={16} className="text-indigo-500" />, value: selectedWorker.platform || 'General Delivery' },
+                                    { label: 'Avg Income', icon: <IndianRupee size={16} className="text-green-500" />, value: `₹${selectedWorker.avgIncome || '4,500'}/wk` },
+                                    { label: 'Status', icon: <div className={`w-2 h-2 rounded-full ${selectedWorker.status === 'Active' ? 'bg-green-500' : 'bg-red-500'}`}></div>, value: selectedWorker.status || 'Active' },
+                                ].map(item => (
+                                    <div key={item.label} className="bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">{item.label}</p>
+                                        <div className="flex items-center gap-2 text-slate-700 font-bold">{item.icon} {item.value}</div>
                                     </div>
-                                </div>
-                                <div className="bg-slate-800/50 p-4 rounded-2xl border border-slate-700/50">
-                                    <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1.5">Platform</p>
-                                    <div className="flex items-center gap-2 text-slate-200">
-                                        <Shield size={16} className="text-indigo-400" />
-                                        <span className="font-bold">{selectedWorker.platform || 'General Delivery'}</span>
-                                    </div>
-                                </div>
-                                <div className="bg-slate-800/50 p-4 rounded-2xl border border-slate-700/50">
-                                    <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1.5">Avg Income</p>
-                                    <div className="flex items-center gap-2 text-slate-200">
-                                        <IndianRupee size={16} className="text-green-400" />
-                                        <span className="font-bold">₹{selectedWorker.avgIncome || '4,500'}/wk</span>
-                                    </div>
-                                </div>
-                                <div className="bg-slate-800/50 p-4 rounded-2xl border border-slate-700/50">
-                                    <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1.5">Account Status</p>
-                                    <div className="flex items-center gap-2 text-slate-200">
-                                        <div className={`w-2 h-2 rounded-full ${selectedWorker.status === 'Active' ? 'bg-green-500' : 'bg-red-500'}`}></div>
-                                        <span className="font-bold">{selectedWorker.status || 'Active'}</span>
-                                    </div>
-                                </div>
+                                ))}
                             </div>
 
-                            <div className="space-y-4">
-                                <button 
+                            <div className="space-y-3">
+                                <button
                                     disabled={isGenerating}
-                                    onClick={() => {
-                                        setIsGenerating(true);
-                                        setTimeout(() => setIsGenerating(false), 2000);
-                                    }}
-                                    className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs uppercase tracking-widest py-4 rounded-2xl transition shadow-lg shadow-indigo-900/20 flex items-center justify-center gap-3 disabled:opacity-70 disabled:hover:bg-indigo-600 disabled:cursor-not-allowed"
+                                    onClick={() => { setIsGenerating(true); setTimeout(() => setIsGenerating(false), 2000); }}
+                                    className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs uppercase tracking-widest py-4 rounded-2xl transition shadow-md shadow-indigo-100 flex items-center justify-center gap-3 disabled:opacity-70"
                                 >
-                                    {isGenerating ? (
-                                        <>
-                                            <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                                            Generating PDF...
-                                        </>
-                                    ) : (
-                                        <>
-                                            <Shield size={16} />
-                                            Generate Income Report
-                                        </>
-                                    )}
+                                    {isGenerating ? <><div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> Generating...</> : <><Shield size={16} /> Generate Income Report</>}
                                 </button>
-                                
-                                {isGenerating === false && (
-                                    <p className="text-[10px] text-center text-slate-500 font-bold uppercase tracking-wider animate-in fade-in slide-in-from-top-2 duration-500">
-                                        Last generated: Just Now
-                                    </p>
-                                )}
-                                
-                                <button 
-                                    onClick={() => setSelectedWorker(null)}
-                                    className="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs uppercase tracking-widest py-4 rounded-2xl transition"
-                                >
+                                <button onClick={() => setSelectedWorker(null)} className="w-full bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs uppercase tracking-widest py-4 rounded-2xl transition">
                                     Close Profile
                                 </button>
                             </div>

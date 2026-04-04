@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: gigguard-ai-python
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: OPENWEATHER_API_KEY
+        value: your_openweather_key_here

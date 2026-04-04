@@ -15,12 +15,15 @@ const Registration = () => {
     });
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
+    const [error, setError] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
+        setError('');
         try {
-            const res = await fetch('http://localhost:3000/api/worker', {
+            const apiBase = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api` : '/api';
+            const res = await fetch(`${apiBase}/worker`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -34,9 +37,13 @@ const Registration = () => {
                 localStorage.setItem('currentUser', JSON.stringify(data.worker));
                 setSuccess(true);
                 setTimeout(() => navigate('/worker-dashboard'), 2000);
+            } else {
+                console.error('Registration failed:', data.error);
+                setError(data.error || 'Registration failed. Please try again.');
             }
         } catch (err) {
-            console.error("Error registering worker:", err);
+            console.error('Network error registering worker:', err);
+            setError('Could not connect to server. Is the backend running?');
         } finally {
             setLoading(false);
         }
@@ -194,6 +201,12 @@ const Registration = () => {
                                         </div>
                                     </div>
                                 </div>
+
+                                {error && (
+                                    <div className="p-3 bg-red-50 border border-red-200 rounded-2xl text-xs font-bold text-red-600">
+                                        ⚠️ {error}
+                                    </div>
+                                )}
 
                                 <button
                                     type="submit"

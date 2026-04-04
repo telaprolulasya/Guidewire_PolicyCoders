@@ -5,8 +5,8 @@ const AdminConfig = require('../models/AdminConfig');
 
 exports.createWorker = async (req, res) => {
   try {
-    const { name, location, platform, avgIncome, currentIncome } = req.body;
-    const worker = await Worker.create({ name, location, platform, avgIncome, currentIncome });
+    const { name, email, password, location, platform, avgIncome, currentIncome } = req.body;
+    const worker = await Worker.create({ name, email, password, location, platform, avgIncome, currentIncome });
     res.status(201).json({ success: true, worker });
   } catch (err) {
     res.status(400).json({ success: false, error: err.message });
