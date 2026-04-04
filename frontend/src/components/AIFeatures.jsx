@@ -1,53 +1,143 @@
-import React from 'react';
-import { BrainCircuit, Calculator, ShieldCheck } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ShieldAlert, TrendingDown, TrendingUp, CheckCircle, AlertTriangle, Info, Zap } from 'lucide-react';
 
-const AIFeatures = () => {
+const AIFeatures = ({ mockData }) => {
+  const [riskData, setRiskData] = useState(null);
+  const [recommendation, setRecommendation] = useState(null);
+  const [fraudData, setFraudData] = useState(null);
+  const [confidenceData, setConfidenceData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulated API calls to backend
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        // 1. Risk Score
+        const riskRes = await fetch(`http://localhost:3000/api/ai/risk?rainfall=${mockData.rain}&aqi=${mockData.aqi}&orders=3`);
+        const riskJson = await riskRes.json();
+        setRiskData(riskJson);
+
+        // 2. Recommendation
+        const recRes = await fetch(`http://localhost:3000/api/ai/recommendation?riskScore=${riskJson.riskScore}&pastDisruptions=2&earningsPattern=stable`);
+        const recJson = await recRes.json();
+        setRecommendation(recJson);
+
+        // 3. Fraud Detection (Simulated Safe for now)
+        const fraudRes = await fetch(`http://localhost:3000/api/ai/fraud?locationMismatch=false&duplicatePayout=false&activityDrop=true`);
+        const fraudJson = await fraudRes.json();
+        setFraudData(fraudJson);
+
+        // 4. Confidence Score
+        const confRes = await fetch(`http://localhost:3000/api/ai/confidence?weatherSeverity=80&aqiSeverity=90&activityDropPercent=75`);
+        const confJson = await confRes.json();
+        setConfidenceData(confJson);
+
+      } catch (err) {
+        console.error("Error fetching AI features:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [mockData]);
+
+  if (loading) return (
+    <div className="flex items-center justify-center p-12 bg-white rounded-3xl border border-slate-100 shadow-sm animate-pulse">
+        <p className="text-slate-400 font-black tracking-widest text-xs uppercase">AI Engine Processing...</p>
+    </div>
+  );
+
   return (
-    <section id="about" className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-10">
-      <div className="mb-16 text-center">
-        <h2 className="text-3xl font-extrabold text-white tracking-tight sm:text-4xl drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">
-          Powered by Generative AI
-        </h2>
-        <p className="mt-4 max-w-3xl text-lg text-slate-400 mx-auto">
-          PolicyCoders utilizes state-of-the-art machine learning to dynamically adapt to risks and provide ultra-personalized parametric coverage.
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {/* Card 1 */}
-        <div className="bg-slate-900/80 backdrop-blur-md rounded-3xl p-8 shadow-[0_0_15px_rgba(34,211,238,0.05)] border border-slate-800 group hover:-translate-y-2 hover:shadow-[0_0_25px_rgba(34,211,238,0.2)] hover:border-cyan-500/50 transition-all duration-300">
-          <div className="w-16 h-16 rounded-2xl bg-cyan-900/30 text-cyan-400 flex items-center justify-center mb-6 shadow-sm border border-cyan-500/30 group-hover:bg-cyan-900/50 group-hover:text-cyan-300 transition-colors duration-300">
-            <BrainCircuit className="w-8 h-8 drop-shadow-[0_0_8px_currentColor]" />
-          </div>
-          <h3 className="text-xl font-bold text-slate-100 mb-3">Hyper-local Risk Prediction</h3>
-          <p className="text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">
-            Our AI ingests millions of data points, including real-time weather and traffic, to predict disruption probabilities at the micro-zone level.
-          </p>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      
+      {/* 1. Risk Score Card */}
+      <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 hover:shadow-lg transition-all group overflow-hidden relative">
+        <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform duration-500">
+            <ShieldAlert size={64} className="text-blue-600" />
         </div>
-
-        {/* Card 2 */}
-        <div className="bg-slate-900/80 backdrop-blur-md rounded-3xl p-8 shadow-[0_0_15px_rgba(16,185,129,0.05)] border border-slate-800 group hover:-translate-y-2 hover:shadow-[0_0_25px_rgba(16,185,129,0.2)] hover:border-emerald-500/50 transition-all duration-300">
-          <div className="w-16 h-16 rounded-2xl bg-emerald-900/30 text-emerald-400 flex items-center justify-center mb-6 shadow-sm border border-emerald-500/30 group-hover:bg-emerald-900/50 group-hover:text-emerald-300 transition-colors duration-300">
-            <Calculator className="w-8 h-8 drop-shadow-[0_0_8px_currentColor]" />
-          </div>
-          <h3 className="text-xl font-bold text-slate-100 mb-3">Dynamic Pricing Engine</h3>
-          <p className="text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">
-            Premiums are not static. Risk levels dynamically adjust pricing, offering gig workers the fairest rate customized to their daily routes and history.
-          </p>
-        </div>
-
-        {/* Card 3 */}
-        <div className="bg-slate-900/80 backdrop-blur-md rounded-3xl p-8 shadow-[0_0_15px_rgba(168,85,247,0.05)] border border-slate-800 group hover:-translate-y-2 hover:shadow-[0_0_25px_rgba(168,85,247,0.2)] hover:border-purple-500/50 transition-all duration-300">
-          <div className="w-16 h-16 rounded-2xl bg-purple-900/30 text-purple-400 flex items-center justify-center mb-6 shadow-sm border border-purple-500/30 group-hover:bg-purple-900/50 group-hover:text-purple-300 transition-colors duration-300">
-            <ShieldCheck className="w-8 h-8 drop-shadow-[0_0_8px_currentColor]" />
-          </div>
-          <h3 className="text-xl font-bold text-slate-100 mb-3">Instant Fraud Detection</h3>
-          <p className="text-slate-400 leading-relaxed group-hover:text-slate-300 transition-colors">
-            Parametric validation means payouts are based entirely on trusted third-party APIs (weather, GPS). No claims forms, zero human bias, and no fraud.
-          </p>
+        <div className="relative z-10">
+            <p className="text-[10px] uppercase font-black text-slate-400 tracking-[0.2em] mb-4">Risk Intelligence</p>
+            <div className="flex items-end gap-2 mb-2">
+                <span className="text-4xl font-black text-slate-900 leading-none">{riskData?.riskScore}</span>
+                <span className="text-sm font-bold text-slate-400 mb-1">/10</span>
+            </div>
+            <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${
+                riskData?.riskLevel === 'High' ? 'bg-red-100 text-red-700' : 
+                riskData?.riskLevel === 'Medium' ? 'bg-orange-100 text-orange-700' : 'bg-green-100 text-green-700'
+            }`}>
+                {riskData?.riskLevel === 'High' ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
+                Level: {riskData?.riskLevel}
+            </div>
         </div>
       </div>
-    </section>
+
+      {/* 2. Recommended Plan Badge */}
+      <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 hover:shadow-lg transition-all group overflow-hidden relative">
+        <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform duration-500">
+            <Zap size={64} className="text-indigo-600" />
+        </div>
+        <div className="relative z-10">
+            <p className="text-[10px] uppercase font-black text-slate-400 tracking-[0.2em] mb-4">AI Recommendation</p>
+            <div className="mb-3">
+                <span className="text-lg font-black text-slate-900 block leading-tight">{recommendation?.recommendedPlan} Plan</span>
+                <p className="text-[10px] text-slate-400 font-bold mt-1 line-clamp-1">{recommendation?.reason}</p>
+            </div>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-blue-50 text-blue-700">
+                <CheckCircle size={12} /> Personalized
+            </div>
+        </div>
+      </div>
+
+      {/* 3. Fraud Warning / Status */}
+      <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 hover:shadow-lg transition-all group overflow-hidden relative">
+        <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform duration-500">
+            <AlertTriangle size={64} className={fraudData?.status === 'Suspicious' ? 'text-red-600' : 'text-green-600'} />
+        </div>
+        <div className="relative z-10">
+            <p className="text-[10px] uppercase font-black text-slate-400 tracking-[0.2em] mb-4">Security Shield</p>
+            <div className="flex items-end gap-2 mb-2">
+                <span className={`text-xl font-black leading-none ${fraudData?.status === 'Suspicious' ? 'text-red-600' : 'text-green-600'}`}>
+                    {fraudData?.status}
+                </span>
+            </div>
+            <div className="bg-slate-50 rounded-xl p-2 mt-2">
+                <div className="flex justify-between items-center mb-1">
+                    <span className="text-[9px] font-black uppercase text-slate-400">Score</span>
+                    <span className="text-[9px] font-black uppercase text-slate-600">{fraudData?.fraudScore}%</span>
+                </div>
+                <div className="w-full h-1 bg-slate-200 rounded-full overflow-hidden">
+                    <div 
+                        className={`h-full transition-all duration-1000 ${fraudData?.status === 'Suspicious' ? 'bg-red-500' : 'bg-green-500'}`}
+                        style={{ width: `${fraudData?.fraudScore}%` }}
+                    ></div>
+                </div>
+            </div>
+        </div>
+      </div>
+
+      {/* 4. Confidence Score Meter */}
+      <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 hover:shadow-lg transition-all group overflow-hidden relative">
+        <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform duration-500">
+            <Info size={64} className="text-slate-600" />
+        </div>
+        <div className="relative z-10">
+            <p className="text-[10px] uppercase font-black text-slate-400 tracking-[0.2em] mb-4">Verification Confidence</p>
+            <div className="flex items-end gap-1 mb-2">
+                <span className="text-4xl font-black text-slate-900 leading-none">{Math.round(confidenceData?.confidenceScore)}%</span>
+            </div>
+            <p className="text-[10px] text-slate-500 font-bold mb-3 line-clamp-1">{confidenceData?.message}</p>
+            <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${
+                confidenceData?.triggerPayout ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-600'
+            }`}>
+                {confidenceData?.triggerPayout ? <CheckCircle size={12} /> : <AlertTriangle size={12} />}
+                {confidenceData?.triggerPayout ? 'Verified for Payout' : 'Under Review'}
+            </div>
+        </div>
+      </div>
+
+    </div>
   );
 };
 

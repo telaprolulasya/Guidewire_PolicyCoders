@@ -1,51 +1,63 @@
 import React from 'react';
-import { ShieldCheck, Menu, Sun, Moon } from 'lucide-react';
+import { ShieldCheck, User, LogOut } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
-const Navbar = ({ theme, toggleTheme }) => {
+const Navbar = ({ workerName = "Ravi Kumar", activeTab = "Dashboard", setActiveTab }) => {
+  const navigate = useNavigate();
+
+  const tabs = [
+    { name: 'Dashboard' },
+    { name: 'Policies' },
+    { name: 'Claims History' }
+  ];
+
   return (
-    <nav className="sticky top-0 z-50 bg-slate-950/80 backdrop-blur-md border-b border-slate-800 transition-colors duration-300">
+    <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <div className="flex-shrink-0 flex items-center gap-2 cursor-pointer group">
-            <div className="bg-gradient-to-r from-cyan-400 to-blue-600 p-2 rounded-xl group-hover:shadow-lg group-hover:shadow-cyan-500/30 transition-all duration-300">
-              <ShieldCheck className="h-6 w-6 text-slate-950" />
+          <div className="flex items-center gap-2 group cursor-pointer" onClick={() => navigate('/')}>
+            <div className="p-2 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl shadow-lg shadow-blue-200 group-hover:scale-110 transition-transform">
+              <ShieldCheck className="text-white w-6 h-6" />
             </div>
-            <span className="font-bold text-xl bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-400">
-              PolicyCoders
-            </span>
+            <div>
+              <span className="text-xl font-black bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-indigo-700 tracking-tight font-display">GigGuard</span>
+            </div>
           </div>
 
-          {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-8 items-center">
-            {['Dashboard', 'Plans', 'Monitoring', 'About'].map((item) => (
-              <a
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                className="text-slate-300 hover:text-cyan-400 font-medium text-sm transition-colors duration-200"
+          <div className="hidden md:flex items-center h-full space-x-8">
+            {tabs.map((tab) => (
+              <button
+                key={tab.name}
+                onClick={() => setActiveTab(tab.name)}
+                className={`h-full px-1 flex items-center text-sm font-bold transition-all relative ${
+                  activeTab === tab.name 
+                    ? 'text-blue-600' 
+                    : 'text-slate-500 hover:text-blue-600'
+                }`}
               >
-                {item}
-              </a>
+                {tab.name}
+                {activeTab === tab.name && (
+                  <div className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-600 rounded-full animate-in slide-in-from-bottom-1 duration-300"></div>
+                )}
+              </button>
             ))}
-            <button 
-              onClick={toggleTheme}
-              className="p-2 rounded-full hover:bg-slate-800 text-slate-400 hover:text-cyan-400 transition-colors"
-              title="Toggle Theme"
-            >
-              {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-            </button>
           </div>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden flex items-center gap-2">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3 bg-slate-100/80 px-4 py-2 rounded-full border border-slate-200/50 hover:bg-slate-200/50 transition-colors cursor-pointer group">
+              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 flex items-center justify-center text-white scale-90 group-hover:scale-100 transition-transform shadow-md">
+                <User size={18} />
+              </div>
+              <div className="hidden sm:block">
+                <div className="text-xs font-black text-slate-800 leading-tight">{workerName}</div>
+                <div className="text-[10px] text-slate-500 font-bold leading-tight uppercase tracking-widest">Active Coverage</div>
+              </div>
+            </div>
             <button 
-              onClick={toggleTheme}
-              className="p-2 rounded-full hover:bg-slate-800 text-slate-400 hover:text-cyan-400 transition-colors"
+              onClick={() => navigate('/')}
+              className="p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all"
             >
-              {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-            </button>
-            <button className="text-slate-400 hover:text-cyan-400 focus:outline-none p-2 rounded-lg hover:bg-slate-800 transition-colors">
-              <Menu className="h-6 w-6" />
+              <LogOut size={20} />
             </button>
           </div>
         </div>

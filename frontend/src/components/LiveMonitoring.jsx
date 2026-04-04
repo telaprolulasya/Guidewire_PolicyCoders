@@ -1,135 +1,127 @@
-import React, { useState, useEffect } from 'react';
-import { Activity, CloudLightning, Wind, MapPin, BellRing, CheckCircle, ChevronRight } from 'lucide-react';
+import React from 'react';
+import { Droplets, Wind, Activity, CloudRain, TrendingUp, TrendingDown } from 'lucide-react';
 
-const LiveMonitoring = () => {
-  const [showNotification, setShowNotification] = useState(false);
+const LiveMonitoring = ({ data }) => {
+  const rain = data?.rain || 0;
+  const aqi = data?.aqi || 0;
+  const orders = data?.orders === "Low" ? 3 : (data?.orders === "Medium" ? 8 : 15);
 
-  useEffect(() => {
-    // Show notification shortly after component mounts
-    const timer = setTimeout(() => {
-      setShowNotification(true);
-    }, 1500);
-    return () => clearTimeout(timer);
-  }, []);
+  const getRainStatus = (v) => v > 50 ? 'Disruption' : (v > 20 ? 'Warning' : 'Normal');
+  const getAqiStatus = (v) => v > 300 ? 'Disruption' : (v > 150 ? 'Warning' : 'Normal');
+  const getOrderStatus = (v) => v < 5 ? 'Disruption' : (v < 10 ? 'Warning' : 'Normal');
+
+  const rainStatus = getRainStatus(rain);
+  const aqiStatus = getAqiStatus(aqi);
+  const orderStatus = getOrderStatus(orders);
+
+  // Overall status
+  const isDisrupted = rainStatus === 'Disruption' || aqiStatus === 'Disruption' || orderStatus === 'Disruption';
+  const isWarning = !isDisrupted && (rainStatus === 'Warning' || aqiStatus === 'Warning' || orderStatus === 'Warning');
+  const overallStatus = isDisrupted ? 'Disruption Detected' : (isWarning ? 'Warning' : 'Normal Operations');
 
   return (
-    <section id="monitoring" className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      <div className="flex flex-col md:flex-row gap-8">
-        
-        {/* Left Col: Live Map/Status */}
-        <div className="flex-1 bg-slate-900/80 backdrop-blur-md rounded-3xl p-8 border border-slate-800 shadow-[0_0_15px_rgba(34,211,238,0.1)] relative">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-              <Activity className="text-cyan-400 animate-pulse drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]" /> Live Monitoring
-            </h2>
-            <span className="px-3 py-1 bg-emerald-900/50 text-emerald-400 text-xs font-bold rounded-full border border-emerald-800/50 uppercase tracking-widest flex items-center gap-1 shadow-[0_0_10px_rgba(16,185,129,0.2)]">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 rounded-full animate-ping"></span>
-              Live Link
-            </span>
-          </div>
+    <div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-100 h-full">
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <h3 className="text-xl font-black text-slate-800 tracking-tight font-display">Live Signal Monitoring</h3>
+          <p className="text-sm text-slate-500 font-bold">Real-time parameters verified by AI</p>
+        </div>
+        <div className={`px-4 py-2 rounded-2xl flex items-center gap-2.5 border ${
+          isDisrupted ? 'bg-red-50 border-red-100 text-red-700' : 
+          (isWarning ? 'bg-orange-50 border-orange-100 text-orange-700' : 'bg-green-50 border-green-100 text-green-700')
+        }`}>
+          <div className={`w-2.5 h-2.5 rounded-full animate-ping ${
+            isDisrupted ? 'bg-red-500' : (isWarning ? 'bg-orange-500' : 'bg-green-500')
+          }`}></div>
+          <span className="text-[10px] font-black uppercase tracking-widest leading-none">
+            {overallStatus}
+          </span>
+        </div>
+      </div>
 
-          <div className="bg-slate-950 relative h-64 rounded-2xl border border-slate-800 overflow-hidden flex items-center justify-center shadow-inner">
-            {/* Mock Map Background */}
-            <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] bg-cyan-900 mix-blend-screen"></div>
-            
-            <div className="relative z-10 p-4 bg-slate-800/90 backdrop-blur-sm rounded-xl border border-cyan-500/30 shadow-[0_0_15px_rgba(34,211,238,0.2)] flex flex-col items-center gap-2 animate-bounce cursor-pointer hover:bg-slate-800 transition-colors">
-              <MapPin className="text-cyan-400 w-8 h-8 drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]" />
-              <span className="font-bold text-slate-100">Your Zone (Zone 4)</span>
-              <span className="text-sm text-slate-400">Koramangala, BLR</span>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        {/* Rainfall Card */}
+        <div className="relative group/monitor">
+          <div className={`relative bg-white rounded-2xl p-6 border transition-all ${
+            rainStatus === 'Disruption' ? 'border-red-200 bg-red-50/10' : (rainStatus === 'Warning' ? 'border-orange-200 bg-orange-50/10' : 'border-slate-100')
+          }`}>
+            <div className="p-3 bg-blue-50 text-blue-600 rounded-xl w-fit mb-4">
+              <Droplets size={24} />
             </div>
-            
-            {/* Severe Weather Indicator on map */}
-            <div className="absolute top-8 left-8 p-3 rounded-full bg-red-900/80 text-red-400 shadow-[0_0_20px_rgba(248,113,113,0.5)] border border-red-800 animate-pulse">
-              <CloudLightning className="w-6 h-6" />
-            </div>
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-wider mb-0.5">Rainfall</p>
+            <h4 className="text-3xl font-black text-slate-800 tracking-tight">{rain}mm</h4>
+            <p className={`text-[10px] font-black mt-4 flex items-center gap-1 uppercase tracking-widest ${
+              rainStatus === 'Disruption' ? 'text-red-600' : (rainStatus === 'Warning' ? 'text-orange-600' : 'text-green-600')
+            }`}>
+              {rainStatus === 'Disruption' ? 'Severe Rain' : (rainStatus === 'Warning' ? 'Moderate Rain' : 'All Clear')}
+            </p>
           </div>
         </div>
 
-        {/* Right Col: Current Sensors & Notifications */}
-        <div className="flex-1 flex flex-col gap-6">
-          <div className="bg-slate-900/80 backdrop-blur-md rounded-3xl p-6 border border-slate-800 shadow-[0_0_15px_rgba(34,211,238,0.1)]">
-            <h3 className="font-bold text-white mb-4 uppercase tracking-wider text-sm border-b border-slate-700 pb-2">Sensor Data</h3>
-            
-            <div className="space-y-4">
-              <div className="flex items-center justify-between p-3 rounded-xl hover:bg-slate-800/80 transition-colors cursor-default group border border-transparent hover:border-slate-700">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-red-900/30 text-red-400 rounded-lg group-hover:bg-red-900/50 transition-colors border border-red-900/50">
-                    <CloudLightning className="w-5 h-5 drop-shadow-[0_0_5px_rgba(248,113,113,0.8)]" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-slate-200">Weather</p>
-                    <p className="text-xs text-slate-400">65mm/hr Rain Detected</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-red-400 font-bold text-sm bg-red-950 px-2 py-1 rounded border border-red-900/50">Critical</span>
-                  <div className="w-3 h-3 bg-red-500 rounded-full shadow-[0_0_8px_rgba(239,68,68,1)] animate-pulse"></div>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between p-3 rounded-xl hover:bg-slate-800/80 transition-colors cursor-default group border border-transparent hover:border-slate-700">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-yellow-900/30 text-yellow-400 rounded-lg group-hover:bg-yellow-900/50 transition-colors border border-yellow-900/50">
-                    <Wind className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-slate-200">AQI Data</p>
-                    <p className="text-xs text-slate-400">Level: 310 (Hazardous)</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-yellow-400 font-bold text-sm bg-yellow-950 px-2 py-1 rounded border border-yellow-900/50">High</span>
-                  <div className="w-3 h-3 bg-yellow-500 rounded-full shadow-[0_0_8px_rgba(234,179,8,1)]"></div>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between p-3 rounded-xl hover:bg-slate-800/80 transition-colors cursor-default group border border-transparent hover:border-slate-700">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-cyan-900/30 text-cyan-400 rounded-lg group-hover:bg-cyan-900/50 transition-colors border border-cyan-900/50">
-                    <Activity className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-slate-200">Delivery Activity</p>
-                    <p className="text-xs text-slate-400">Demand: Low (Zone Locked)</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-cyan-400 font-bold text-sm bg-cyan-950 px-2 py-1 rounded border border-cyan-900/50">Safe</span>
-                  <div className="w-3 h-3 bg-cyan-500 rounded-full shadow-[0_0_8px_rgba(6,182,212,1)]"></div>
-                </div>
-              </div>
+        {/* AQI Card */}
+        <div className="relative group/monitor">
+          <div className={`relative bg-white rounded-2xl p-6 border transition-all ${
+            aqiStatus === 'Disruption' ? 'border-red-200 bg-red-50/10' : (aqiStatus === 'Warning' ? 'border-orange-200 bg-orange-50/10' : 'border-slate-100')
+          }`}>
+            <div className="p-3 bg-purple-50 text-purple-600 rounded-xl w-fit mb-4">
+              <Wind size={24} />
             </div>
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-wider mb-0.5">AQI Index</p>
+            <h4 className="text-3xl font-black text-slate-800 tracking-tight">{aqi}</h4>
+            <p className={`text-[10px] font-black mt-4 flex items-center gap-1 uppercase tracking-widest ${
+              aqiStatus === 'Disruption' ? 'text-red-600' : (aqiStatus === 'Warning' ? 'text-orange-600' : 'text-green-600')
+            }`}>
+              {aqiStatus === 'Disruption' ? 'Critical Air' : (aqiStatus === 'Warning' ? 'Unhealthy' : 'Good Quality')}
+            </p>
           </div>
+        </div>
 
-          {/* Payout Notification Section inline */}
-          <div className="h-32 relative">
-            {showNotification && (
-              <div className="absolute inset-0 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-2xl shadow-[0_0_30px_rgba(34,211,238,0.4)] border border-cyan-400/50 flex items-center p-6 text-white transform transition-all duration-500 translate-y-0 opacity-100 hover:scale-[1.02] cursor-pointer">
-                <div className="flex justify-between w-full items-center">
-                  <div className="flex gap-4 items-center">
-                    <div className="bg-white/20 p-3 rounded-full backdrop-blur-sm shadow-[0_0_15px_rgba(255,255,255,0.3)] border border-white/30">
-                      <BellRing className="w-6 h-6 animate-wiggle text-yellow-300 drop-shadow-[0_0_5px_rgba(253,224,71,0.8)]" />
-                    </div>
-                    <div>
-                      <h4 className="font-bold flex items-center gap-2 text-lg">
-                        Instant Claim Approved <CheckCircle className="w-5 h-5 text-emerald-300" />
-                      </h4>
-                      <p className="text-cyan-50 text-sm mt-1">₹250 credited due to heavy rain disruption in Zone 4.</p>
-                    </div>
-                  </div>
-                  <ChevronRight className="w-6 h-6 opacity-60" />
-                </div>
-              </div>
-            )}
-            {!showNotification && (
-              <div className="h-full flex items-center justify-center text-slate-500 border-2 border-dashed border-slate-700/50 rounded-2xl bg-slate-900/50 font-medium">
-                Listening for risk events...
-              </div>
-            )}
+        {/* Delivery Activity Card */}
+        <div className="relative group/monitor">
+          <div className={`relative bg-white rounded-2xl p-6 border transition-all ${
+            orderStatus === 'Disruption' ? 'border-red-200 bg-red-50/10' : (orderStatus === 'Warning' ? 'border-orange-200 bg-orange-50/10' : 'border-slate-100')
+          }`}>
+            <div className="p-3 bg-orange-50 text-orange-600 rounded-xl w-fit mb-4">
+              <Activity size={24} />
+            </div>
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-wider mb-0.5">Activity Drop</p>
+            <h4 className="text-3xl font-black text-slate-800 tracking-tight">{data?.orders || "Normal"}</h4>
+            <p className={`text-[10px] font-black mt-4 flex items-center gap-1 uppercase tracking-widest ${
+              orderStatus === 'Disruption' ? 'text-red-600' : (orderStatus === 'Warning' ? 'text-orange-600' : 'text-green-600')
+            }`}>
+              {orderStatus === 'Disruption' ? 'High Impact' : (orderStatus === 'Warning' ? 'Minor Delay' : 'Stable')}
+            </p>
           </div>
         </div>
       </div>
-    </section>
+
+      {/* Status Detail Bar */}
+      <div className={`mt-8 p-5 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4 border transition-all ${
+        isDisrupted ? 'bg-red-50 border-red-100' : (isWarning ? 'bg-orange-50 border-orange-100' : 'bg-slate-50 border-slate-100')
+      }`}>
+        <div className="flex items-center gap-4">
+          <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-inner ${
+            isDisrupted ? 'bg-red-100 text-red-600' : (isWarning ? 'bg-orange-100 text-orange-600' : 'bg-blue-100 text-blue-600')
+          }`}>
+            <CloudRain size={24} />
+          </div>
+          <div>
+            <p className={`text-sm font-black uppercase tracking-tight ${isDisrupted ? 'text-red-800' : 'text-slate-800'}`}>
+              Platform Status: {overallStatus}
+            </p>
+            <p className="text-xs text-slate-500 font-bold tracking-tight">
+              {isDisrupted ? 'Automatic payout triggered. Funds will be credited instantly.' : 
+               (isWarning ? 'Climate threshold detected. Monitor earnings for gap protection.' : 'Environmental conditions are stable. No risks detected.')}
+            </p>
+          </div>
+        </div>
+        {isDisrupted && (
+          <div className="px-6 py-2.5 bg-red-600 text-white text-[10px] font-black uppercase tracking-widest rounded-xl animate-pulse shadow-lg shadow-red-200">
+            Payout Processing
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
 
