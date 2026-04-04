@@ -27,25 +27,16 @@ git push origin main
 
 ---
 
-## 3. Deploy the Frontend (React/Vite)
-1.  Click **"Add New" > "Project"** again.
-2.  Import the same GitHub repo.
-3.  In the Project Settings:
-    *   **Project Name:** `gigguard-ui`
-    *   **Root Directory:** Select `frontend`
-    *   **Framework Preset:** Vite
-4.  **Environment Variables:**
-    *   Add `VITE_API_URL` and paste your **Backend URL** from Step 2.
-5.  Click **Deploy**.
+## 3. Deploy to Render (Alternative)
+I have added a `render.yaml` file in the root. You can now use **Render Blueprint** for a one-click setup:
+1.  Connect your GitHub repo to **Render.com**.
+2.  Choose "Blueprint" and it will automatically detect the configuration.
+3.  Fill in the environment variables:
+    *   `MONGO_URI`
+    *   `VITE_API_URL` (Frontend)
+    *   `OPENWEATHER_API_KEY` (Python Backend)
 
 ---
 
-## 4. Troubleshooting Python Backend
-The Python backend (`/backend_python`) is still set up to use SQLite. Vercel's serverless environment is **ReadOnly**, so SQLite database updates will not persist. 
-
-**Recommendation:** For a persistent Python backend, we recommend using **Render.com** or **Railway.app**, or migrating to a cloud database (like MongoDB or PostgreSQL).
-
----
-
-## 5. Live Testing
-Once done, visit your `gigguard-ui.vercel.app` URL. You can now use the registration and dashboard functions live!
+## 4. Live Testing
+Once done, visit your `render.com` or `vercel.app` URL. You can now use the registration and dashboard functions live!

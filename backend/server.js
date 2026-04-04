@@ -55,10 +55,8 @@ app.use('/api/admin', adminRoutes);   // Admin API e.g. /api/admin/overview
 app.use('/api', aiRoutes);           // AI-driven Features API
 
 const PORT = process.env.PORT || 3000;
-if (process.env.NODE_ENV !== 'production') {
-  app.listen(PORT, () => {
-    console.log(`Backend server running on http://localhost:${PORT}`);
-  });
-}
+app.listen(PORT, () => {
+  console.log(`Backend server running on port ${PORT}`);
+});
 
 module.exports = app;

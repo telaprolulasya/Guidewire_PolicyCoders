@@ -1,0 +1,35 @@
+services:
+  # Node.js Backend
+  - type: web
+    name: gigguard-backend
+    runtime: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: MONGO_URI
+        sync: false
+      - key: NODE_ENV
+        value: production
+    rootDirectory: backend
+
+  # Python Backend
+  - type: web
+    name: gigguard-ai-python
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: OPENWEATHER_API_KEY
+        sync: false
+    rootDirectory: backend_python
+
+  # Frontend (Static)
+  - type: web
+    name: gigguard-frontend
+    runtime: static
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        sync: false
+    rootDirectory: frontend
