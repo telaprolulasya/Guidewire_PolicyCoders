@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ShieldCheck, LogOut, ShieldAlert, LayoutDashboard, Sliders, Shield, Play } from 'lucide-react';
+import { ShieldCheck, LogOut, ShieldAlert, LayoutDashboard, Sliders, Shield, Play, PieChart } from 'lucide-react';
 import api from '../api';
 
 import Admin from '../components/Admin';
@@ -9,6 +9,7 @@ import RuleConfig from '../components/RuleConfig';
 import RiskMonitoring from '../components/RiskMonitoring';
 import FraudAndWorkers from '../components/FraudAndWorkers';
 import WeatherChecker from '../components/WeatherChecker';
+import AnalyticsDashboard from '../components/AnalyticsDashboard';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -88,6 +89,7 @@ const AdminDashboard = () => {
           <nav className="sticky top-28 space-y-2">
             {[
               { id: 'overview', label: 'Dashboard & Risks', icon: <LayoutDashboard size={20} /> },
+              { id: 'analytics', label: 'Data Analytics', icon: <PieChart size={20} /> },
               { id: 'rules',    label: 'Parametric Config', icon: <Sliders size={20} /> },
               { id: 'payouts',  label: 'Fraud & Workers',   icon: <Shield size={20} /> },
             ].map(tab => (
@@ -128,6 +130,16 @@ const AdminDashboard = () => {
               <WeatherChecker />
               <Admin stats={adminStats} />
               <RiskMonitoring />
+            </div>
+          )}
+
+          {activeTab === 'analytics' && (
+            <div className="space-y-8 fade-in">
+              <div>
+                <h2 className="text-3xl font-black text-slate-900 tracking-tight mb-1">Data Analytics</h2>
+                <p className="text-slate-500 text-lg">Visualizations for payout trends, risks, disruptions, and plan usage.</p>
+              </div>
+              <AnalyticsDashboard />
             </div>
           )}
 

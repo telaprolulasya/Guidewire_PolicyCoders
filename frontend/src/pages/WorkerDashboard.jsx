@@ -34,7 +34,7 @@ const WorkerDashboard = () => {
     setTimeout(() => setNotification(null), 4000);
   };
 
-  const [aiData, setAiData] = useState({ riskLevel: 'Checking...', riskScore: 0 });
+  const [aiData, setAiData] = useState({ riskLevel: 'High', riskScore: 8 });
 
   // Mock data for the demo
   const mockData = {
@@ -42,19 +42,6 @@ const WorkerDashboard = () => {
     aqi: 420,
     orders: "Low"
   };
-
-  useEffect(() => {
-    const fetchAIBasics = async () => {
-      try {
-        const res = await fetch(`http://localhost:3000/api/ai/risk?rainfall=${mockData.rain}&aqi=${mockData.aqi}&orders=3`);
-        const json = await res.json();
-        setAiData(json);
-      } catch (err) {
-        console.error("Error fetching AI basics:", err);
-      }
-    };
-    fetchAIBasics();
-  }, [mockData.rain, mockData.aqi]);
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] text-slate-900 font-sans pb-20 selection:bg-blue-100 selection:text-blue-900">

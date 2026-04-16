@@ -9,6 +9,35 @@ const FraudAndWorkers = () => {
     const [selectedWorker, setSelectedWorker] = useState(null);
     const [isGenerating, setIsGenerating] = useState(false);
 
+    const displayWorkers = workers.length ? workers : [
+        { id: 1042, name: 'Ramesh Patel', city: 'Mumbai', plan_id: 2, status: 'Active' },
+        { id: 3021, name: 'Anjali Sharma', city: 'Delhi', plan_id: 3, status: 'Suspended' },
+        { id: 4123, name: 'Manoj Kumar', city: 'Bangalore', plan_id: 1, status: 'Active' },
+    ];
+
+    const handleInvestigate = (fraudItem) => {
+        const workerToView = displayWorkers.find(w => w.id === fraudItem.worker_id || (w._id && w._id.endsWith(fraudItem.worker_id.toString()))) || 
+            { id: fraudItem.worker_id, name: "Unknown Worker", city: "Unknown", status: "Suspended" };
+        setSelectedWorker(workerToView);
+    };
+
+    const handleGenerateReport = (worker) => {
+        setIsGenerating(true);
+        setTimeout(() => {
+            setIsGenerating(false);
+            const reportContent = `INCOME REPORT\n-----------------------\nWorker ID: #${worker._id?.slice(-6) || worker.id}\nName: ${worker.name}\nLocation: ${worker.location || worker.city}\nStatus: ${worker.status || 'Active'}\nAverage Income: ₹${worker.avgIncome || '4,500'}/week\n\nGenerated on: ${new Date().toLocaleString()}\nPlatform: GigGuard AI Parametric Insurance`;
+            const blob = new Blob([reportContent], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Income_Report_${worker.name.replace(/\s+/g, '_')}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }, 1500);
+    };
+
     useEffect(() => {
         const fetchData = () => {
             api.get('/admin/fraud').then(res => setFraud(res.data.fraud || [])).catch(() => {});
@@ -23,12 +52,6 @@ const FraudAndWorkers = () => {
     const displayFraud = fraud.length ? fraud : [
         { worker_id: 1042, reason: 'Location Mismatch. GPS outside zone.', reported_date: 'Today 14:02' },
         { worker_id: 3021, reason: 'Duplicate claim detected within 24hrs', reported_date: 'Today 09:12' },
-    ];
-
-    const displayWorkers = workers.length ? workers : [
-        { id: 1042, name: 'Ramesh Patel', city: 'Mumbai', plan_id: 2, status: 'Active' },
-        { id: 3021, name: 'Anjali Sharma', city: 'Delhi', plan_id: 3, status: 'Suspended' },
-        { id: 4123, name: 'Manoj Kumar', city: 'Bangalore', plan_id: 1, status: 'Active' },
     ];
 
     const displayPayouts = payouts.length ? payouts : [
@@ -61,7 +84,7 @@ const FraudAndWorkers = () => {
                                 <p className="text-slate-700 font-medium">{f.reason}</p>
                                 <div className="mt-3 flex items-center gap-2">
                                     <span className="text-xs bg-white text-slate-500 px-2 py-1 rounded-md border border-slate-200">Worker ID #{f.worker_id}</span>
-                                    <button className="text-xs text-indigo-500 hover:text-indigo-700 font-medium">Investigate</button>
+                                    <button onClick={() => handleInvestigate(f)} className="text-xs text-indigo-500 hover:text-indigo-700 font-medium">Investigate</button>
                                 </div>
                             </div>
                         ))}
@@ -171,7 +194,7 @@ const FraudAndWorkers = () => {
                             <div className="space-y-3">
                                 <button
                                     disabled={isGenerating}
-                                    onClick={() => { setIsGenerating(true); setTimeout(() => setIsGenerating(false), 2000); }}
+                                    onClick={() => handleGenerateReport(selectedWorker)}
                                     className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs uppercase tracking-widest py-4 rounded-2xl transition shadow-md shadow-indigo-100 flex items-center justify-center gap-3 disabled:opacity-70"
                                 >
                                     {isGenerating ? <><div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> Generating...</> : <><Shield size={16} /> Generate Income Report</>}
