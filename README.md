@@ -1,155 +1,142 @@
-# AI-Powered Parametric Insurance for Gig Workers
+# 🚀 GigGuard AI – Instant Income Protection for Gig Workers
 
-## Problem Statement
-Delivery partners in India (Swiggy, Zomato, Zepto, etc.) depend on daily earnings for their livelihood. However, external disruptions such as heavy rainfall, extreme heat, high air pollution, and sudden curfews significantly reduce their working hours.
+## 💡 Problem Statement
 
-Currently, there is no financial protection system that compensates them for income loss during such events.
+Gig workers (delivery partners, drivers, etc.) depend on daily earnings for their livelihood. However, external disruptions such as heavy rainfall, poor air quality (AQI), and local restrictions can significantly reduce their working hours and income.
 
-This project aims to build an AI-powered parametric insurance platform that automatically compensates delivery workers when predefined environmental conditions disrupt their work. The system ensures fast, transparent, and zero-touch payouts without requiring manual claim processes.
+Traditional insurance models do not address this real-time income loss, leaving gig workers financially vulnerable.
 
-## Objectives
-The primary goal of this solution is to provide financial stability to gig workers by protecting their income during disruptions.
+---
 
-- Provide income protection for gig workers  
-- Enable automatic and instant payouts  
-- Reduce financial uncertainty  
-- Build a scalable insurance solution  
+## 💡 Our Solution
 
-## Key Features
-The platform focuses on automation, simplicity, and real-time data to ensure a seamless user experience.
+GigGuard AI is an **AI-powered parametric insurance platform** designed to protect gig workers from income loss.
 
-- Weekly subscription-based insurance  
-- Automatic claim triggering (parametric model)  
-- Income-based payout calculation  
-- Real-time monitoring (weather, AQI)  
-- Fraud detection mechanism  
-- Zero manual claim process  
+Instead of manual claims, our system:
+- Monitors real-time conditions (weather, AQI, activity)
+- Detects disruptions using predefined thresholds
+- Calculates income loss
+- Automatically triggers payouts
 
-## Workflow
-The system follows a simple and automated process to ensure quick and efficient payouts.
+👉 **No claims. No delays. Instant compensation.**
 
-- User registers and logs in  
-- User selects a weekly insurance plan (Basic / Standard / Premium)  
-- User pays the premium  
-- System monitors weather and AQI  
-- User can raise a ticket if needed  
-- System checks data using APIs  
-- If condition is met, claim is triggered  
-- System calculates income loss  
-- Payout is processed and credited  
+---
 
-## Persona
-This scenario explains how the platform helps a delivery partner during disruptions.
+## ⚙️ How It Works
 
-- Sam expects to earn ₹600 on a normal day  
-- Due to heavy rain, he earns only ₹200  
-- He loses ₹400 of expected income  
-- The system detects rainfall above threshold  
-- Calculates income loss using past average  
-- Automatically credits compensation  
-- Ensures stable income during disruptions  
+1. User selects a weekly insurance plan  
+2. System monitors environmental and activity data  
+3. AI calculates risk score and disruption probability  
+4. Disruption is detected  
+5. Income loss is calculated  
+6. Payout is automatically credited
 
-## Weekly Premium Model
-The platform follows a weekly subscription model aligned with gig workers’ earnings, making it affordable and easy to adopt.
+---
 
-### Available Plans:
-- Basic Plan → ₹20/week  
-- Standard Plan → ₹30/week  
-- Premium Plan → ₹40/week  
+## 🤖 AI Features
 
-### Features:
-- Flexible plan selection  
-- Affordable pricing  
-- Coverage based on user needs  
+- Risk Score (Low / Medium / High)  
+- Smart Plan Recommendation  
+- Disruption Confidence Score  
+- Automated Payout System  
+- Fraud Detection (duplicate/anomaly detection)  
 
-## Income-Based Payout Calculation
-The payout is calculated based on actual income loss to ensure fair and personalized compensation.
+---
 
-Formula:  
-Payout = Average Income (last 7 days) – Current Day Income  
+## 👷 User Features
 
-Final Rule:  
-Final Payout = min(Loss, Plan Coverage Limit)  
+- 📊 Dashboard with Risk Insights  
+- 💡 Plan Recommendation  
+- 🌧 Live Monitoring (Rain, AQI, Activity)  
+- 💰 Automatic Payout Notifications  
+- 📈 Income Loss Tracker  
+- 📜 Payout History  
 
-## Parametric Triggers
-The system automatically triggers payouts when predefined environmental conditions are exceeded.
+---
 
-- Rainfall > 50 mm  
-- AQI > 300  
-- Temperature > 45°C  
+## 🧑‍💼 Admin Features
 
-## Fraud Detection Mechanism
-To ensure reliability, the system uses multiple checks to validate claims and prevent misuse.
+- 📊 Analytics Dashboard (Graphs)  
+- ⚠️ Disruption Monitoring  
+- 🎛 Event Trigger Simulation  
+- 🛡 Fraud Detection Insights  
+- 📈 Payout Trends & Risk Analysis  
 
-- Location Verification – user location check  
-- Disruption Validation – API data check  
-- Duplicate Prevention – no repeated claims  
-- Time Validation – valid time check  
-- Income Verification – income data check  
-- Pattern Analysis – detect unusual claims  
+---
 
-## Tech Stack
-The system is built using modern technologies to ensure scalability and performance.
+## 🛠 Tech Stack
 
-- Frontend: React.js, Tailwind CSS  
-- Backend: Spring Boot REST APIs  
-- Database: MySQL  
-- AI/ML: Python, Scikit-learn  
-- Tools: Git, GitHub, Postman, Docker
+- **Frontend:** React.js, Tailwind CSS  
+- **Backend:** Node.js, Express.js  
+- **Database:** MongoDB Atlas  
+- **Deployment:**
+  - Frontend → Vercel  
+  - Backend → Render  
 
-## APIs
-External APIs are used to fetch real-time environmental data and simulate system behavior.
+---
 
-- OpenWeather API → weather data  
-- Air Quality API → AQI data  
-- Mock APIs → simulation  
-- Razorpay (Test Mode) → payout simulation  
+## 🌐 Live Demo
 
-## Development Plan
-The project is developed in phases to ensure proper planning, implementation, and optimization.
+- Frontend: https://policycoder.vercel.app/ 
+- Backend: https://gigguard-backend.onrender.com  
 
-### Phase 1 (Week 1–2)
-- Define problem, persona, and workflow  
-- Design system and select tech stack  
-- Define triggers and premium model  
-- Create README and basic UI  
+---
 
-### Phase 2 (Week 3–4)
-- Build backend APIs  
-- Integrate weather and AQI APIs  
-- Implement trigger detection and payout logic  
-- Add fraud detection  
-- Improve UI  
+## 🎥 Demo Video
 
-### Phase 3 (Week 5–6)
-- Enhance fraud detection  
-- Integrate payment system  
-- Build dashboard  
-- Test and optimize system  
-- Prepare demo and presentation  
+https://youtu.be/5dXI-GSawjk
 
-## Future Enhancements
-The platform can be further improved with advanced features and integrations.
+---
 
-- Advanced AI risk prediction  
-- Integration with delivery platforms  
-- Multi-city support  
+## 📊 Pitch Deck
 
-## Impact
-This solution improves financial security and builds trust among gig workers through automation.
+https://docs.google.com/presentation/d/12Sen0WyIlth-axrVTLY-EgUP4oFGbaZT/edit?usp=sharing&ouid=111279301489401494620&rtpof=true&sd=true 
 
-- Protects delivery workers from income loss  
-- Provides instant and fair compensation  
-- Reduces financial uncertainty  
-- Encourages insurance adoption  
-- Builds trust through automation  
+---
 
-## Team Details
+## ⚙️ How to Run Locally
 
-**Team Name:** PolicyCoders  
-**Links:**
-- GitHub Repository: https://github.com/telaprolulasya/Guidewire_PolicyCoders
-- Demo Video: [https://youtu.be/GUr0iGdwWMM]
-  
+### Clone Repository
+git clone https://github.com/telaprolulasya/Guidewire_PolicyCoders.git
+cd Guidewire_PolicyCoders
 
-""Empowering gig workers with smart, real-time income protection""
+## ⚙️ Running the Project Locally
+
+## 📦 Backend Setup
+cd backend  
+npm install  
+Create a `.env` file in backend folder and add:
+PORT=5000  
+MONGO_URI=your_mongodb_connection_string  
+
+Start backend:
+node server.js  
+Backend runs on: http://localhost:5000  
+
+---
+
+## 💻 Frontend Setup
+
+cd frontend  
+npm install  
+Create a `.env` file in frontend folder and add:
+VITE_API_URL=http://localhost:5000  
+
+Run frontend:
+npm run dev  
+Frontend runs on: http://localhost:5174
+
+---
+
+## 🔗 API Connection
+Make sure frontend uses:
+const API = import.meta.env.VITE_API_URL;
+
+---
+
+## ⚠️ Notes
+- Start backend before frontend  
+- Ensure MongoDB connection is correct  
+- Update `.env` values if needed
+
+> “We eliminate the need for claims by enabling automatic, AI-driven payouts for income loss.”
